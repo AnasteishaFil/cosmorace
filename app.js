@@ -178,65 +178,19 @@ else{
 	let highest=0;
 	startscreen.addEventListener('click',start);
 	
-	var ArrowUp=false, ArrowDown=false, ArrowRight=false, ArrowLeft=false;
-	const arrup=document.querySelector('.arrow_up');
-	const arrdown=document.querySelector('.arrow_down');
-	const arrright=document.querySelector('.arrow_right');
-	const arrleft=document.querySelector('.arrow_left');
-	
-	arrup.addEventListener('touchstart',keyDownU);
-	arrdown.addEventListener('touchstart',keyDownD);
-	arrright.addEventListener('touchstart',keyDownR);
-	arrleft.addEventListener('touchstart',keyDownL);
-	arrup.addEventListener('touchend',keyUpU);
-	arrdown.addEventListener('touchend',keyUpD);
-	arrright.addEventListener('touchend',keyUpR);
-	arrleft.addEventListener('touchend',keyUpL);
-	
-	function keyDownU(e){
-		e.preventDefault;
-		 ArrowUp=true;
-		 if(player.y>(road.top+70)){
-			player.y-=player.speed;
-	  }
-	}
-	function keyUpU(e){
-		e.preventDefault;
-		 ArrowUp=false;
-	}
-	function keyDownD(e){
-		e.preventDefault;
-		ArrowDown=true;
-		if(player.y<(road.bottom-70)){
-			player.y+=player.speed;
-	  }
-  }
-  function keyUpD(e){
-	e.preventDefault;
-	ArrowDown=false;
-  }
-  function keyDownR(e){
-	e.preventDefault;
-		ArrowRight=true;
-		if(player.x<(road.width+60)){
-			player.x+=player.speed;
-	  }
-	}
-	function keyUpR(e){
-		e.preventDefault;
-		ArrowRight=false;
-	}
-	function keyDownL(e){
-		e.preventDefault;
-		ArrowLeft=true;
-		if(player.x>0){
-			player.x-=player.speed;
-	  }
-	}
-	function keyUpL(e){
-		e.preventDefault;
-		ArrowLeft=false;
-	}
+	let keys={ArrowUp: false, ArrowDown: false, ArrowRight: false, ArrowLeft: false};
+
+document.addEventListener('keydown',keyDown);
+document.addEventListener('keyup',keyUp);
+
+function keyDown(ev){
+	 ev.preventDefault();
+	 keys[ev.key]=true;
+}
+function keyUp(ev){
+	 ev.preventDefault();
+	 keys[ev.key]=false;
+}
 	function isCollide(a,b){
 		 aRect=a.getBoundingClientRect();
 		 bRect=b.getBoundingClientRect();
@@ -283,6 +237,18 @@ else{
 	
 			  moveLines();
 			  moveCar(car);
+			 if(keys.ArrowUp && player.y>(road.top+70)){
+				player.y-=player.speed;
+		  }
+		  if(keys.ArrowDown && player.y<(road.bottom-70)){
+				player.y+=player.speed;
+		  }
+		  if(keys.ArrowLeft && player.x>0){
+				player.x-=player.speed;
+		  }
+		  if(keys.ArrowRight && player.x<(road.width-75)){
+				player.x+=player.speed;
+		  }
 	
 			  car.style.top=player.y + 'px';
 			  car.style.left=player.x + 'px';
